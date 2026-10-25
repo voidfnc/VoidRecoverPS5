@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "catalog_version": "0.2.0",
+  "generated_at": "2026-10-25T00:00:00Z",
+  "sources": [
+    {
+      "source_id": "mewx-ps5-fw-list",
+      "name": "MewX PS5 Official Firmware List",
+      "source_type": "community_reference",
+      "source_page": "https://github.com/MewX/ps5-official-firmware-list",
+      "maintainer": "MewX",
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": "mewx_index",
+      "derived_from": [
+        "darthsternie-ps5",
+        "ps5-devwiki"
+      ],
+      "notes": "A public index of official firmware from 01.12 to 14.20 with build date, SHA-256, MD5 and size (some sizes are rounded). The only source with SHA-256 values. It is built partly from Darthsternie's data, so its MD5 agreeing with Darthsternie is not independent confirmation."
+    },
+    {
+      "source_id": "sony-ps5-cdn",
+      "name": "Sony PS5 Update CDN",
+      "source_type": "official_publisher",
+      "source_page": "https://www.playstation.com/en-us/support/hardware/ps5/system-software/",
+      "maintainer": "Sony Interactive Entertainment",
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": "sony_cdn",
+      "derived_from": [],
+      "notes": "Sony's own download server. The current update and recovery files are read from Sony's support page. Some older files are still served; the app checks one at a time when you ask, and treats a missing or empty file as unavailable."
+    },
+    {
+      "source_id": "darthsternie-ps5",
+      "name": "Darthsternie's PS5 Firmware Archive",
+      "source_type": "community_archive",
+      "source_page": "https://darthsternie.net/ps5-firmwares/",
+      "maintainer": null,
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": "darthsternie_ps5",
+      "derived_from": [],
+      "notes": "A community archive of official and recovery firmware with MD5 checksums and download mirrors. \"Official\" is the archive's own category, not a sign that Sony hosts the file. Sizes are missing for newer entries, and it can lag behind Sony. Mirror links are read when you refresh and are never saved in the app's source code."
+    },
+    {
+      "source_id": "ps5-devwiki",
+      "name": "PS5 Developer Wiki",
+      "source_type": "community_reference",
+      "source_page": "https://www.psdevwiki.com/ps5/",
+      "maintainer": null,
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": null,
+      "derived_from": [],
+      "notes": "A community technical reference for PS5 hardware, software and storage. Link only: the site blocks automated reading, so the app takes nothing from it."
+    },
+    {
+      "source_id": "ps5dev-github",
+      "name": "PS5Dev GitHub Organization",
+      "source_type": "developer_release",
+      "source_page": "https://github.com/PS5Dev",
+      "maintainer": "Repository-specific maintainers; verify per repository",
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": null,
+      "derived_from": [],
+      "notes": "A GitHub organisation with PS5 developer research projects. Prefer each project's own repository and release page over copies on other sites."
+    },
+    {
+      "source_id": "gezine-y2jb",
+      "name": "Gezine/Y2JB",
+      "source_type": "developer_release",
+      "source_page": "https://github.com/Gezine/Y2JB",
+      "maintainer": "Gezine",
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": null,
+      "derived_from": [],
+      "notes": "The original Y2JB project. Its README is the source for blocking updates with DNS and for the database warnings used in the recovery wizard."
+    },
+    {
+      "source_id": "myfl-resource-index",
+      "name": "myfl.uk PS5 Jailbreak & Homebrew Resources",
+      "source_type": "community_directory",
+      "source_page": "https://myfl.uk/",
+      "maintainer": "bilawalriaz",
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": null,
+      "derived_from": [],
+      "notes": "A community directory of tools, projects and guides (site last reviewed 2026-10-03). For download or technical claims, use the linked project's own page as the main source."
+    },
+    {
+      "source_id": "reddit-ps5-jailbreak",
+      "name": "r/PS5_Jailbreak",
+      "source_type": "community_discussion",
+      "source_page": "https://www.reddit.com/r/PS5_Jailbreak/",
+      "maintainer": null,
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": null,
+      "derived_from": [],
+      "notes": "Community discussions and incident reports. Link only: the site blocks automated reading. Treat stories as leads, not as technical instructions."
+    },
+    {
+      "source_id": "sony-ps5-system-software",
+      "name": "Sony PS5 System Software Guide",
+      "source_type": "official_publisher",
+      "source_page": "https://www.playstation.com/en-us/support/hardware/ps5/system-software/",
+      "maintainer": "Sony Interactive Entertainment",
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": null,
+      "derived_from": [],
+      "notes": "Sony's basic update and reinstall steps, the USB folder and file name, and the warning that a reinstall deletes data. Its 1.1 GB and 1.2 GB free-space figures are out of date; the app uses real file sizes. Listed alongside community sources, not as the only allowed one."
+    },
+    {
+      "source_id": "sony-ps5-safe-mode",
+      "name": "Sony PS5 Safe Mode Guide",
+      "source_type": "official_publisher",
+      "source_page": "https://www.playstation.com/en-us/support/hardware/safe-mode-playstation/",
+      "maintainer": "Sony Interactive Entertainment",
+      "last_checked": "2026-10-25T00:00:00Z",
+      "adapter": null,
+      "derived_from": [],
+      "notes": "Sony's guide to opening Safe Mode and what each option does. The wizard shows option names and their consequences, not just numbers."
+    }
+  ]
+}

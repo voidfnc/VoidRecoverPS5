@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "packages": [
+    {
+      "package_id": "example-source:VERSION:recovery",
+      "source_id": "example-source",
+      "firmware_version": "VERSION_FROM_SOURCE",
+      "build_date": null,
+      "source_section": "Recovery Firmwares",
+      "raw_package_label": "COPY_EXACT_LABEL_FROM_SOURCE",
+      "package_type": "reinstall",
+      "variant_label": null,
+      "published_size_bytes": null,
+      "size_is_approximate": false,
+      "hashes": [
+        {
+          "algorithm": "md5",
+          "value": "REPLACE_WITH_VALUE_COPIED_FROM_SOURCE",
+          "source_id": "example-source",
+          "derived_from": null
+        }
+      ],
+      "mirrors": [
+        {
+          "host": "example.invalid",
+          "url": "https://example.invalid/synthetic-folder-link",
+          "mode": "external_browser",
+          "scope": "folder",
+          "availability": "browser_only",
+          "probed_at": null
+        }
+      ],
+      "last_checked": "2026-10-25T00:00:00Z",
+      "notes": "Schema example only. Replace every placeholder with reviewed source data before cataloging a real package. Mirror URLs are synthetic; real mirror links are fetched at runtime and never committed."
+    }
+  ]
+}
