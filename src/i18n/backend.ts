@@ -62,6 +62,13 @@ const RULES: Rule[] = [
     ["reported", "text"],
     ["expected", "text"],
   ]),
+  R(/^The Midnight Archive's server answered HTTP (\d+), so the file is not available/, "bk.archiveHttp", [
+    ["status", "text"],
+  ]),
+  R(/^The Midnight Archive's server reports (\d+) bytes but the catalog expects (\d+)\./, "bk.archiveSizeMismatch", [
+    ["reported", "text"],
+    ["expected", "text"],
+  ]),
   R(/^The connection ended after (\d+) of (\d+) bytes\./, "bk.truncated", [
     ["got", "text"],
     ["expected", "text"],
@@ -79,6 +86,8 @@ const RULES: Rule[] = [
   R(/^A USB build is running; try again when it has finished\.$/, "bk.buildRunningRetry"),
   R(/^A refresh is already running\.$/, "bk.refreshRunning"),
   R(/^Sony has no download address for this package\.$/, "bk.noSonyAddress"),
+  R(/^The Midnight Archive has no download address for this package\.$/, "bk.noArchiveAddress"),
+  R(/^The sources disagree about this file's checksum or size/, "bk.downloadConflict"),
   R(/^That catalog entry no longer exists\.$/, "bk.entryGone"),
   R(/^The drive is no longer connected\.$/, "bk.driveGone"),
   R(/^The drive changed since you chose it\./, "bk.driveChanged"),

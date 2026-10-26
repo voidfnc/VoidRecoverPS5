@@ -273,6 +273,9 @@ export const dict: Record<Key, string> = {
     "只能写入标准的更新和恢复文件。特殊变体和未知包不提供。不确定需要哪个版本？请先阅读目录中的说明；选错文件可能会终结可用于漏洞利用的固件。",
   "build.step2": "2. 文件",
   "build.download": "从 Sony 下载",
+  "build.downloadArchive": "从 Midnight Archive 下载",
+  "build.archiveNote": "Midnight Archive 是社区档案库，不是 Sony。它按 SHA-256 查找文件，并会看到你的 IP 地址。应用会将下载内容与已发布的校验和比对，不一致就删除。",
+  "build.sonyGoneArchive": "Sony 的服务器已不再提供此文件，Midnight Archive 仍提供。",
   "build.downloading": "正在下载…",
   "build.haveFile": "选择我已有的文件",
   "build.noSonyDownload":
@@ -348,6 +351,10 @@ export const dict: Record<Key, string> = {
   "bk.networkError": "网络错误：{detail}",
   "bk.couldNotSave": "无法保存文件：{detail}",
   "bk.onlyStandard": "本应用只能将标准的更新和恢复文件写入驱动器。",
+  "bk.archiveHttp": "Midnight Archive 的服务器返回 HTTP {status}，因此目前无法从那里获取该文件。",
+  "bk.archiveSizeMismatch": "Midnight Archive 的服务器报告 {reported} 字节，但目录要求 {expected} 字节。未保存任何内容。",
+  "bk.noArchiveAddress": "Midnight Archive 没有此包的下载地址。",
+  "bk.downloadConflict": "各来源对此文件的校验和或大小不一致，因此应用不会下载它。请查看目录条目。",
   "bk.sonyNoLonger": "Sony 的服务器已不再提供此文件。",
   "bk.downloadedNoMatch":
     "下载的文件与此条目已发布的校验和不一致，因此已被删除。",
@@ -547,11 +554,13 @@ export const dict: Record<Key, string> = {
 
   // Source notes (shown on the Sources page; English is also in manifests/sources.json)
   "src.mewx-ps5-fw-list.note":
-    "官方固件的公开索引，涵盖 01.12 至 14.20，含构建日期、SHA-256、MD5 和大小（部分大小已取整）。这是唯一提供 SHA-256 值的来源。它部分取自 Darthsternie 的数据，因此其 MD5 与 Darthsternie 一致并不构成独立确认。",
+    "官方固件的公开索引，涵盖 01.12 至 14.20，含构建日期、SHA-256、MD5 和大小（部分大小已取整）。这是提供 SHA-256 值的两个来源之一，另一个是 Midnight Archive。它部分取自 Darthsternie 的数据，因此其 MD5 与 Darthsternie 一致并不构成独立确认。",
   "src.sony-ps5-cdn.note":
     "Sony 自己的下载服务器。当前的更新和恢复文件是从 Sony 的支持页面读取的。一些较旧的文件仍在提供；应用在您要求时逐个检查，并将缺失或为空的文件视为不可用。",
   "src.darthsternie-ps5.note":
     "官方固件和恢复固件的社区存档，附 MD5 校验和与下载镜像。“Official”是该存档自己的分类，并不表示文件由 Sony 托管。较新的条目缺少大小，且可能落后于 Sony。镜像链接在您刷新时读取，绝不会保存在应用的源代码中。",
+  "src.midnight-archive-ps5.note":
+    "一个社区档案库，列出官方 PS5 更新和恢复文件及其自行计算的 SHA-256 与 MD5 值，并通过 https 按 SHA-256 提供每个文件。应用在刷新时读取这两份列表（按网站要求在请求之间暂停），只有在你选择从它下载时才会访问下载地址。下载的文件会像其他来源一样与已发布的校验和比对。大小为取整值。当它与其他来源不一致时，目录会同时显示两个值，应用不会下载该条目。",
   "src.ps5-devwiki.note":
     "关于 PS5 硬件、软件和存储的社区技术参考。仅链接：该网站阻止自动读取，因此应用不会从中获取任何内容。",
   "src.ps5dev-github.note":

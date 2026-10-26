@@ -272,6 +272,10 @@ export const en = {
     "Only standard update and recovery files can be written. Special variants and unknown packages are not offered. Not sure which version you need? Read the catalog notes first; the wrong file can end an exploit-compatible firmware.",
   "build.step2": "2. The file",
   "build.download": "Download from Sony",
+  "build.downloadArchive": "Download from the Midnight Archive",
+  "build.archiveNote":
+    "The Midnight Archive is a community archive, not Sony. It finds the file by its SHA-256 and sees your IP address. The app checks the download against the published checksums and deletes it if they don't match.",
+  "build.sonyGoneArchive": "Sony's server doesn't offer this file any more. The Midnight Archive does.",
   "build.downloading": "Downloading…",
   "build.haveFile": "Choose a file I already have",
   "build.noSonyDownload":
@@ -347,6 +351,13 @@ export const en = {
   "bk.networkError": "Network error: {detail}",
   "bk.couldNotSave": "Could not save the file: {detail}",
   "bk.onlyStandard": "Only standard update and recovery files can be written to a drive by this app.",
+  "bk.archiveHttp":
+    "The Midnight Archive's server answered HTTP {status}, so the file is not available from there right now.",
+  "bk.archiveSizeMismatch":
+    "The Midnight Archive's server reports {reported} bytes but the catalog expects {expected}. Nothing was saved.",
+  "bk.noArchiveAddress": "The Midnight Archive has no download address for this package.",
+  "bk.downloadConflict":
+    "The sources disagree about this file's checksum or size, so the app will not download it. See the catalog entry.",
   "bk.sonyNoLonger": "Sony's server no longer offers this file.",
   "bk.downloadedNoMatch":
     "The downloaded file does not match the checksums published for this entry, so it was deleted.",
@@ -546,11 +557,13 @@ export const en = {
 
   // Source notes (shown on the Sources page; English is also in manifests/sources.json)
   "src.mewx-ps5-fw-list.note":
-    "A public index of official firmware from 01.12 to 14.20 with build date, SHA-256, MD5 and size (some sizes are rounded). The only source with SHA-256 values. It is built partly from Darthsternie's data, so its MD5 agreeing with Darthsternie is not independent confirmation.",
+    "A public index of official firmware from 01.12 to 14.20 with build date, SHA-256, MD5 and size (some sizes are rounded). One of two sources with SHA-256 values; the other is the Midnight Archive. It is built partly from Darthsternie's data, so its MD5 agreeing with Darthsternie is not independent confirmation.",
   "src.sony-ps5-cdn.note":
     "Sony's own download server. The current update and recovery files are read from Sony's support page. Some older files are still served; the app checks one at a time when you ask, and treats a missing or empty file as unavailable.",
   "src.darthsternie-ps5.note":
     "A community archive of official and recovery firmware with MD5 checksums and download mirrors. \"Official\" is the archive's own category, not a sign that Sony hosts the file. Sizes are missing for newer entries, and it can lag behind Sony. Mirror links are read when you refresh and are never saved in the app's source code.",
+  "src.midnight-archive-ps5.note":
+    "A community archive that lists official PS5 update and recovery files with the SHA-256 and MD5 values it computed, and serves each file by its SHA-256 over https. The app reads the two listings when you refresh (pausing between requests as the site asks) and only contacts a download address when you choose to download from it. The download is checked against the published checksums like any other. Sizes are rounded. Where it disagrees with other sources, the catalog shows both values and the app will not download that entry.",
   "src.ps5-devwiki.note":
     "A community technical reference for PS5 hardware, software and storage. Link only: the site blocks automated reading, so the app takes nothing from it.",
   "src.ps5dev-github.note":

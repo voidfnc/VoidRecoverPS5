@@ -232,6 +232,9 @@ export interface PreflightView {
   source_size: number;
 }
 
+/** Catalog source ids a package can be downloaded from. */
+export type DownloadSource = "sony-ps5-cdn" | "midnight-archive-ps5";
+
 export interface DownloadView {
   path: string;
   check: EntryCheck;

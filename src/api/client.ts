@@ -7,6 +7,7 @@ import type {
   BuildPhase,
   BuildView,
   CatalogView,
+  DownloadSource,
   DownloadView,
   LeftoverGroup,
   NotebookDiff,
@@ -30,7 +31,7 @@ export const api = {
   cancelVerify: () => invoke<void>("cancel_verify"),
   systemLanguages: () => invoke<{ installer: number | null; windows_ui: number | null }>("system_languages"),
   listVolumes: () => invoke<VolumeView[]>("list_volumes"),
-  downloadPackage: (key: string) => invoke<DownloadView>("download_package", { key }),
+  downloadPackage: (key: string, source?: DownloadSource) => invoke<DownloadView>("download_package", { key, source }),
   cancelDownload: () => invoke<void>("cancel_download"),
   preflightBuild: (key: string, sourcePath: string, volumeId: string) =>
     invoke<PreflightView>("preflight_build", { key, sourcePath, volumeId }),

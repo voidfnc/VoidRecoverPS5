@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useApp } from "../App";
 import { api, errorText, onBuildProgress, onDownloadProgress, pickPupFile } from "../api/client";
-import type { BuildPhase, BuildView, CatalogEntry, LeftoverGroup, PreflightView, VolumeInfo, VolumeView } from "../api/types";
+import type { BuildPhase, BuildView, CatalogEntry, DownloadSource, LeftoverGroup, PreflightView, VolumeInfo, VolumeView } from "../api/types";
 import { TypeBadge } from "../components/Badges";
 import { useI18n, type Key } from "../i18n";
 import { localizeBackend } from "../i18n/backend";
 import { formatBuild, formatBytes } from "../lib/format";
 import { packageTypeShort } from "../lib/labels";
 
-const SONY_SOURCE_ID = "sony-ps5-cdn";
+const SONY_SOURCE_ID: DownloadSource = "sony-ps5-cdn";
+const ARCHIVE_SOURCE_ID: DownloadSource = "midnight-archive-ps5";
 
 const PHASE_KEY: Record<BuildPhase, Key> = {
   writing: "build.phaseWriting",
@@ -27,10 +28,10 @@ function isBuildable(e: CatalogEntry): boolean {
   return (e.package_type === "update" || e.package_type === "reinstall") && !e.variant_label;
 }
 
-function sonyDownloadable(e: CatalogEntry): boolean {
+function downloadable(e: CatalogEntry, sourceId: string): boolean {
   return e.records.some(
     (r) =>
-      r.source_id === SONY_SOURCE_ID &&
+      r.source_id === sourceId &&
       r.mirrors.some((m) => m.mode === "direct_https" && m.availability !== "unavailable"),
   );
 }
@@ -116,13 +117,13 @@ export function BuildPage() {
     setError(null);
   };
 
-  const download = async () => {
+  const download = async (from: DownloadSource) => {
     if (!entry) return;
     setError(null);
     setBusy("download");
     setProgress(null);
     try {
-      const d = await api.downloadPackage(entry.key);
+      const d = await api.downloadPackage(entry.key, from);
       setSource({ path: d.path, name: d.path.split(/[\\/]/).pop() ?? d.path, downloaded: true });
     } catch (e) {
       setError(errorText(e));
@@ -239,9 +240,18 @@ export function BuildPage() {
             <section className="panel">
               <h2>{t("build.step2")}</h2>
               <div className="row gap">
-                {sonyDownloadable(entry) && (
-                  <button className="btn primary" onClick={download} disabled={busy !== null}>
+                {downloadable(entry, SONY_SOURCE_ID) && (
+                  <button className="btn primary" onClick={() => download(SONY_SOURCE_ID)} disabled={busy !== null}>
                     {busy === "download" ? t("build.downloading") : t("build.download")}
+                  </button>
+                )}
+                {downloadable(entry, ARCHIVE_SOURCE_ID) && (
+                  <button
+                    className={downloadable(entry, SONY_SOURCE_ID) ? "btn" : "btn primary"}
+                    onClick={() => download(ARCHIVE_SOURCE_ID)}
+                    disabled={busy !== null}
+                  >
+                    {t("build.downloadArchive")}
                   </button>
                 )}
                 {busy === "download" && (
@@ -253,7 +263,12 @@ export function BuildPage() {
                   {t("build.haveFile")}
                 </button>
               </div>
-              {!sonyDownloadable(entry) && <p className="muted small">{t("build.noSonyDownload")}</p>}
+              {downloadable(entry, ARCHIVE_SOURCE_ID) && <p className="muted small">{t("build.archiveNote")}</p>}
+              {!downloadable(entry, SONY_SOURCE_ID) && (
+                <p className="muted small">
+                  {t(downloadable(entry, ARCHIVE_SOURCE_ID) ? "build.sonyGoneArchive" : "build.noSonyDownload")}
+                </p>
+              )}
               {source && (
                 <p className="small">
                   <span className="mono break">{source.name}</span>

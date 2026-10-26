@@ -274,6 +274,10 @@ export const dict: Record<Key, string> = {
     "Si possono scrivere solo i normali file di aggiornamento e ripristino. Le varianti speciali e i pacchetti sconosciuti non vengono proposti. Non sai quale versione ti serve? Leggi prima le note del catalogo; il file sbagliato può porre fine a un firmware compatibile con l'exploit.",
   "build.step2": "2. Il file",
   "build.download": "Scarica da Sony",
+  "build.downloadArchive": "Scarica dal Midnight Archive",
+  "build.archiveNote":
+    "Il Midnight Archive è un archivio della community, non Sony. Trova il file tramite il suo SHA-256 e vede il tuo indirizzo IP. L'app confronta il download con i checksum pubblicati e lo elimina se non corrispondono.",
+  "build.sonyGoneArchive": "Il server di Sony non offre più questo file. Il Midnight Archive sì.",
   "build.downloading": "Download in corso…",
   "build.haveFile": "Scegli un file che ho già",
   "build.noSonyDownload":
@@ -349,6 +353,13 @@ export const dict: Record<Key, string> = {
   "bk.networkError": "Errore di rete: {detail}",
   "bk.couldNotSave": "Impossibile salvare il file: {detail}",
   "bk.onlyStandard": "Questa app può scrivere su un'unità solo i normali file di aggiornamento e ripristino.",
+  "bk.archiveHttp":
+    "Il server del Midnight Archive ha risposto HTTP {status}, quindi al momento il file non è disponibile da lì.",
+  "bk.archiveSizeMismatch":
+    "Il server del Midnight Archive segnala {reported} byte, ma il catalogo ne prevede {expected}. Non è stato salvato nulla.",
+  "bk.noArchiveAddress": "Il Midnight Archive non ha un indirizzo di download per questo pacchetto.",
+  "bk.downloadConflict":
+    "Le fonti non concordano sul checksum o sulle dimensioni di questo file, quindi l'app non lo scaricherà. Vedi la voce del catalogo.",
   "bk.sonyNoLonger": "Il server di Sony non offre più questo file.",
   "bk.downloadedNoMatch":
     "Il file scaricato non corrisponde ai checksum pubblicati per questa voce, quindi è stato eliminato.",
@@ -548,11 +559,13 @@ export const dict: Record<Key, string> = {
 
   // Source notes (shown on the Sources page; English is also in manifests/sources.json)
   "src.mewx-ps5-fw-list.note":
-    "Un indice pubblico dei firmware ufficiali dalla 01.12 alla 14.20 con data di build, SHA-256, MD5 e dimensione (alcune dimensioni sono arrotondate). L'unica fonte con valori SHA-256. È costruito in parte sui dati di Darthsternie, quindi la concordanza del suo MD5 con Darthsternie non è una conferma indipendente.",
+    "Un indice pubblico dei firmware ufficiali dalla 01.12 alla 14.20 con data di build, SHA-256, MD5 e dimensione (alcune dimensioni sono arrotondate). Una delle due fonti con valori SHA-256; l'altra è il Midnight Archive. È costruito in parte sui dati di Darthsternie, quindi la concordanza del suo MD5 con Darthsternie non è una conferma indipendente.",
   "src.sony-ps5-cdn.note":
     "Il server di download di Sony. I file attuali di aggiornamento e ripristino sono letti dalla pagina di supporto di Sony. Alcuni file più vecchi sono ancora offerti; l'app ne controlla uno alla volta quando lo chiedi e considera non disponibile un file mancante o vuoto.",
   "src.darthsternie-ps5.note":
     "Un archivio della community di firmware ufficiali e di ripristino con checksum MD5 e mirror di download. \"Ufficiale\" è la categoria dell'archivio stesso, non un segno che Sony ospiti il file. Le dimensioni mancano per le voci più recenti e può restare indietro rispetto a Sony. I link ai mirror vengono letti quando aggiorni e non sono mai salvati nel codice sorgente dell'app.",
+  "src.midnight-archive-ps5.note":
+    "Un archivio della community che elenca i file ufficiali di aggiornamento e ripristino della PS5 con valori SHA-256 e MD5 da esso calcolati, e fornisce ogni file tramite il suo SHA-256 via https. L'app legge i due elenchi quando aggiorni (con la pausa tra le richieste che il sito chiede) e contatta un indirizzo di download solo quando scegli di scaricare da lì. Il download viene confrontato con i checksum pubblicati come qualsiasi altro. Le dimensioni sono arrotondate. Dove è in disaccordo con altre fonti, il catalogo mostra entrambi i valori e l'app non scarica quella voce.",
   "src.ps5-devwiki.note":
     "Un riferimento tecnico della community su hardware, software e archiviazione di PS5. Solo link: il sito blocca la lettura automatica, quindi l'app non ne ricava nulla.",
   "src.ps5dev-github.note":

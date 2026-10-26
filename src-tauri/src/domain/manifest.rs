@@ -14,7 +14,7 @@ pub const SUPPORTED_SCHEMA_VERSION: u32 = 1;
 const MAX_MANIFEST_BYTES: usize = 256 * 1024;
 const MAX_DEPTH: usize = 8;
 /// Adapters compiled into the app. A manifest can only refer to these.
-pub const KNOWN_ADAPTERS: &[&str] = &["mewx_index", "sony_cdn", "darthsternie_ps5"];
+pub const KNOWN_ADAPTERS: &[&str] = &["mewx_index", "sony_cdn", "darthsternie_ps5", "midnight_archive"];
 const FORBIDDEN_KEYS: &[&str] = &[
     "exec",
     "command",
@@ -177,7 +177,7 @@ mod tests {
     #[test]
     fn bundled_manifest_is_valid() {
         let m = SourcesManifest::parse(BUNDLED).expect("bundled manifest must validate");
-        for id in ["mewx-ps5-fw-list", "sony-ps5-cdn", "darthsternie-ps5"] {
+        for id in ["mewx-ps5-fw-list", "sony-ps5-cdn", "darthsternie-ps5", "midnight-archive-ps5"] {
             assert!(m.source(id).is_some(), "{id} missing");
         }
     }

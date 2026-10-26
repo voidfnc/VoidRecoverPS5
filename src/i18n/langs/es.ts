@@ -274,6 +274,10 @@ export const dict: Record<Key, string> = {
     "Solo se pueden escribir archivos estándar de actualización y recuperación. Las variantes especiales y los paquetes desconocidos no se ofrecen. ¿No sabes qué versión necesitas? Lee antes las notas del catálogo; un archivo equivocado puede acabar con un firmware compatible con el exploit.",
   "build.step2": "2. El archivo",
   "build.download": "Descargar de Sony",
+  "build.downloadArchive": "Descargar del Midnight Archive",
+  "build.archiveNote":
+    "El Midnight Archive es un archivo de la comunidad, no Sony. Encuentra el archivo por su SHA-256 y ve tu dirección IP. La app comprueba lo descargado con las sumas de comprobación publicadas y lo elimina si no coinciden.",
+  "build.sonyGoneArchive": "El servidor de Sony ya no ofrece este archivo. El Midnight Archive sí.",
   "build.downloading": "Descargando…",
   "build.haveFile": "Elegir un archivo que ya tengo",
   "build.noSonyDownload":
@@ -349,6 +353,13 @@ export const dict: Record<Key, string> = {
   "bk.networkError": "Error de red: {detail}",
   "bk.couldNotSave": "No se pudo guardar el archivo: {detail}",
   "bk.onlyStandard": "Esta aplicación solo puede escribir en una unidad archivos estándar de actualización y recuperación.",
+  "bk.archiveHttp":
+    "El servidor del Midnight Archive respondió HTTP {status}, así que el archivo no está disponible allí ahora mismo.",
+  "bk.archiveSizeMismatch":
+    "El servidor del Midnight Archive indica {reported} bytes, pero el catálogo espera {expected}. No se guardó nada.",
+  "bk.noArchiveAddress": "El Midnight Archive no tiene dirección de descarga para este paquete.",
+  "bk.downloadConflict":
+    "Las fuentes no coinciden en la suma de comprobación o el tamaño de este archivo, así que la app no lo descargará. Consulta la entrada del catálogo.",
   "bk.sonyNoLonger": "El servidor de Sony ya no ofrece este archivo.",
   "bk.downloadedNoMatch":
     "El archivo descargado no coincide con las sumas de comprobación publicadas para esta entrada, así que se eliminó.",
@@ -548,11 +559,13 @@ export const dict: Record<Key, string> = {
 
   // Source notes (shown on the Sources page; English is also in manifests/sources.json)
   "src.mewx-ps5-fw-list.note":
-    "Un índice público de firmware oficial de 01.12 a 14.20 con fecha de compilación, SHA-256, MD5 y tamaño (algunos tamaños están redondeados). Es la única fuente con valores SHA-256. Se basa en parte en los datos de Darthsternie, así que la coincidencia de su MD5 con el de Darthsternie no es una confirmación independiente.",
+    "Un índice público de firmware oficial de 01.12 a 14.20 con fecha de compilación, SHA-256, MD5 y tamaño (algunos tamaños están redondeados). Es una de las dos fuentes con valores SHA-256; la otra es el Midnight Archive. Se basa en parte en los datos de Darthsternie, así que la coincidencia de su MD5 con el de Darthsternie no es una confirmación independiente.",
   "src.sony-ps5-cdn.note":
     "El servidor de descargas de Sony. Los archivos actuales de actualización y recuperación se leen de la página de soporte de Sony. Algunos archivos antiguos aún se ofrecen; la aplicación comprueba uno cada vez cuando se lo pides y trata un archivo ausente o vacío como no disponible.",
   "src.darthsternie-ps5.note":
     "Un archivo de la comunidad con firmware oficial y de recuperación, con sumas de comprobación MD5 y espejos de descarga. \"Oficial\" es la categoría propia del archivo, no una señal de que Sony aloje el archivo. Faltan los tamaños de las entradas más nuevas y puede ir por detrás de Sony. Los enlaces de los espejos se leen al actualizar y nunca se guardan en el código fuente de la aplicación.",
+  "src.midnight-archive-ps5.note":
+    "Un archivo de la comunidad que lista archivos oficiales de actualización y recuperación de PS5 con valores SHA-256 y MD5 calculados por él, y sirve cada archivo por su SHA-256 mediante https. La app lee las dos listas al actualizar (con la pausa entre solicitudes que pide el sitio) y solo contacta una dirección de descarga cuando eliges descargar desde ella. La descarga se comprueba con las sumas de comprobación publicadas, como cualquier otra. Los tamaños están redondeados. Donde discrepa de otras fuentes, el catálogo muestra ambos valores y la app no descargará esa entrada.",
   "src.ps5-devwiki.note":
     "Una referencia técnica de la comunidad sobre el hardware, el software y el almacenamiento de PS5. Solo enlace: el sitio bloquea la lectura automática, así que la aplicación no toma nada de él.",
   "src.ps5dev-github.note":

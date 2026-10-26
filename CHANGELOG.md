@@ -1,6 +1,14 @@
 # Changelog
 
 ## Unreleased
+**Midnight Archive.**
+
+- New source: the Midnight Channel Archives' PS5 update and recovery listings (SHA-256, MD5, rounded sizes), read on refresh with the five-second pause its robots.txt asks for. Layout changes fail closed like the other sources.
+- Build a recovery USB can download from the archive with its own button (the archive finds files by SHA-256). It is never used automatically, the page says it is a third party that sees your IP address, and the download is checked and deleted on a mismatch like any other. The size check uses the exact size from the catalog.
+- An entry whose sources disagree about its checksum or size is no longer downloaded, instead of being downloaded and then deleted.
+- The catalog now shows places where sources disagree, for example four old update files whose MD5 in the MewX list and Darthsternie's page differs from the archive's (the archive's MD5 matched the bytes in a test download) and recovery files the archive labels with other version numbers.
+- Error messages and source notes translated in all twelve languages.
+
 **Twelve languages.**
 
 - The window and the installer are available in English, Russian, Chinese (Simplified), Spanish, French, German, Portuguese (Brazil), Turkish, Polish, Japanese, Korean and Italian. Machine-drafted translations, English as the reference; all warning texts were read again against the English for strength.

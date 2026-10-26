@@ -273,6 +273,10 @@ export const dict: Record<Key, string> = {
     "Seuls les fichiers standard de mise à jour et de récupération peuvent être écrits. Les variantes spéciales et les paquets inconnus ne sont pas proposés. Vous ne savez pas quelle version il vous faut ? Lisez d'abord les notes du catalogue ; un mauvais fichier peut mettre fin à un firmware compatible avec l'exploit.",
   "build.step2": "2. Le fichier",
   "build.download": "Télécharger depuis Sony",
+  "build.downloadArchive": "Télécharger depuis le Midnight Archive",
+  "build.archiveNote":
+    "Le Midnight Archive est une archive communautaire, et non Sony. Il retrouve le fichier grâce à son SHA-256 et voit votre adresse IP. L'app compare le téléchargement aux sommes de contrôle publiées et le supprime si elles ne correspondent pas.",
+  "build.sonyGoneArchive": "Le serveur de Sony ne propose plus ce fichier. Le Midnight Archive, si.",
   "build.downloading": "Téléchargement…",
   "build.haveFile": "Choisir un fichier que j'ai déjà",
   "build.noSonyDownload":
@@ -348,6 +352,13 @@ export const dict: Record<Key, string> = {
   "bk.networkError": "Erreur réseau : {detail}",
   "bk.couldNotSave": "Impossible d'enregistrer le fichier : {detail}",
   "bk.onlyStandard": "Cette application ne peut écrire sur un lecteur que les fichiers standard de mise à jour et de récupération.",
+  "bk.archiveHttp":
+    "Le serveur du Midnight Archive a répondu HTTP {status} ; le fichier n'est donc pas disponible là-bas pour le moment.",
+  "bk.archiveSizeMismatch":
+    "Le serveur du Midnight Archive indique {reported} octets, mais le catalogue en attend {expected}. Rien n'a été enregistré.",
+  "bk.noArchiveAddress": "Le Midnight Archive n'a pas d'adresse de téléchargement pour ce paquet.",
+  "bk.downloadConflict":
+    "Les sources ne sont pas d'accord sur la somme de contrôle ou la taille de ce fichier ; l'app ne le téléchargera donc pas. Consultez l'entrée du catalogue.",
   "bk.sonyNoLonger": "Le serveur de Sony ne propose plus ce fichier.",
   "bk.downloadedNoMatch":
     "Le fichier téléchargé ne correspond pas aux sommes de contrôle publiées pour cette entrée ; il a donc été supprimé.",
@@ -547,11 +558,13 @@ export const dict: Record<Key, string> = {
 
   // Source notes (shown on the Sources page; English is also in manifests/sources.json)
   "src.mewx-ps5-fw-list.note":
-    "Un index public des firmwares officiels de 01.12 à 14.20 avec date de build, SHA-256, MD5 et taille (certaines tailles sont arrondies). La seule source avec des valeurs SHA-256. Il est construit en partie à partir des données de Darthsternie ; l'accord de son MD5 avec celui de Darthsternie n'est donc pas une confirmation indépendante.",
+    "Un index public des firmwares officiels de 01.12 à 14.20 avec date de build, SHA-256, MD5 et taille (certaines tailles sont arrondies). L'une des deux sources avec des valeurs SHA-256 ; l'autre est le Midnight Archive. Il est construit en partie à partir des données de Darthsternie ; l'accord de son MD5 avec celui de Darthsternie n'est donc pas une confirmation indépendante.",
   "src.sony-ps5-cdn.note":
     "Le serveur de téléchargement propre à Sony. Les fichiers de mise à jour et de récupération actuels sont lus depuis la page d'assistance de Sony. Certains fichiers plus anciens sont encore proposés ; l'application en vérifie un à la fois lorsque vous le demandez, et considère un fichier absent ou vide comme indisponible.",
   "src.darthsternie-ps5.note":
     "Une archive communautaire de firmwares officiels et de récupération avec sommes de contrôle MD5 et miroirs de téléchargement. « Officiel » est la catégorie propre à l'archive, pas un signe que Sony héberge le fichier. Les tailles manquent pour les entrées récentes, et elle peut être en retard sur Sony. Les liens des miroirs sont lus lors de l'actualisation et ne sont jamais enregistrés dans le code source de l'application.",
+  "src.midnight-archive-ps5.note":
+    "Une archive communautaire qui répertorie les fichiers officiels de mise à jour et de récupération de la PS5 avec les valeurs SHA-256 et MD5 qu'elle a calculées, et qui sert chaque fichier par son SHA-256 en https. L'app lit les deux listes lors de l'actualisation (avec la pause entre requêtes que demande le site) et ne contacte une adresse de téléchargement que lorsque vous choisissez d'y télécharger. Le téléchargement est comparé aux sommes de contrôle publiées, comme tout autre. Les tailles sont arrondies. Quand elle diffère des autres sources, le catalogue affiche les deux valeurs et l'app ne télécharge pas cette entrée.",
   "src.ps5-devwiki.note":
     "Une référence technique communautaire sur le matériel, le logiciel et le stockage de la PS5. Lien seulement : le site bloque la lecture automatisée, l'application n'en tire donc rien.",
   "src.ps5dev-github.note":

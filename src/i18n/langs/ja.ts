@@ -273,6 +273,10 @@ export const dict: Record<Key, string> = {
     "書き込めるのは、標準のアップデートファイルとリカバリーファイルだけです。特殊バリアントと不明なパッケージは提示されません。必要なバージョンが分からない場合は、先にカタログのメモを読んでください。誤ったファイルを使うと、エクスプロイトが使えるファームウェアでなくなることがあります。",
   "build.step2": "2. ファイル",
   "build.download": "Sonyからダウンロード",
+  "build.downloadArchive": "Midnight Archiveからダウンロード",
+  "build.archiveNote":
+    "Midnight ArchiveはSonyではなく、コミュニティのアーカイブです。SHA-256でファイルを探し、あなたのIPアドレスを確認できます。アプリはダウンロードしたファイルを公開されているチェックサムと照合し、一致しなければ削除します。",
+  "build.sonyGoneArchive": "Sonyのサーバーは、もうこのファイルを提供していません。Midnight Archiveでは提供されています。",
   "build.downloading": "ダウンロード中…",
   "build.haveFile": "手元のファイルを選択",
   "build.noSonyDownload":
@@ -348,6 +352,10 @@ export const dict: Record<Key, string> = {
   "bk.networkError": "ネットワークエラー: {detail}",
   "bk.couldNotSave": "ファイルを保存できませんでした: {detail}",
   "bk.onlyStandard": "このアプリがドライブに書き込めるのは、標準のアップデートファイルとリカバリーファイルだけです。",
+  "bk.archiveHttp": "Midnight Archiveのサーバーが HTTP {status} を返したため、現在そこからはファイルを入手できません。",
+  "bk.archiveSizeMismatch": "Midnight Archiveのサーバーは {reported} バイトと報告していますが、カタログでは {expected} バイトとされています。何も保存していません。",
+  "bk.noArchiveAddress": "このパッケージには、Midnight Archiveのダウンロードアドレスがありません。",
+  "bk.downloadConflict": "このファイルのチェックサムまたはサイズについて、情報源の間で食い違いがあるため、アプリはダウンロードしません。カタログの項目を確認してください。",
   "bk.sonyNoLonger": "Sonyのサーバーは、もうこのファイルを提供していません。",
   "bk.downloadedNoMatch":
     "ダウンロードしたファイルが、この項目で公開されているチェックサムと一致しなかったため、削除しました。",
@@ -547,11 +555,13 @@ export const dict: Record<Key, string> = {
 
   // Source notes (shown on the Sources page; English is also in manifests/sources.json)
   "src.mewx-ps5-fw-list.note":
-    "01.12から14.20までの公式ファームウェアの公開索引で、ビルド日、SHA-256、MD5、サイズがあります (一部のサイズは概数です)。SHA-256の値があるのはこのソースだけです。Darthsternieのデータを一部元にして作られているため、MD5がDarthsternieと一致しても独立した確認にはなりません。",
+    "01.12から14.20までの公式ファームウェアの公開索引で、ビルド日、SHA-256、MD5、サイズがあります (一部のサイズは概数です)。SHA-256の値があるのは、このソースとMidnight Archiveの2つです。Darthsternieのデータを一部元にして作られているため、MD5がDarthsternieと一致しても独立した確認にはなりません。",
   "src.sony-ps5-cdn.note":
     "Sony自身のダウンロードサーバーです。現行のアップデートファイルとリカバリーファイルは、Sonyのサポートページから読み取ります。古いファイルの一部は今も配信されています。アプリは、依頼があったときに1つずつ確認し、存在しないファイルや空のファイルは利用不可として扱います。",
   "src.darthsternie-ps5.note":
     "公式ファームウェアとリカバリーファームウェアのコミュニティアーカイブで、MD5チェックサムとダウンロードミラーがあります。「Official」はアーカイブ自身の分類であり、Sonyがそのファイルをホストしていることを示すものではありません。新しい項目ではサイズがなく、Sonyより遅れることがあります。ミラーのリンクは更新時に読み取られ、アプリのソースコードには保存されません。",
+  "src.midnight-archive-ps5.note":
+    "コミュニティのアーカイブで、公式のPS5アップデートファイルとリカバリーファイルを、自ら計算したSHA-256とMD5の値とともに一覧にし、各ファイルをSHA-256でhttps配信しています。アプリは更新時に2つの一覧を読み取り (サイトの求めに従って要求の間に間隔を置きます)、ここからのダウンロードを選んだときにだけダウンロードアドレスに接続します。ダウンロードしたファイルは、他のものと同じく公開されているチェックサムと照合されます。サイズは概数です。他のソースと食い違う場合、カタログは両方の値を表示し、アプリはその項目をダウンロードしません。",
   "src.ps5-devwiki.note":
     "PS5のハードウェア、ソフトウェア、ストレージに関するコミュニティの技術リファレンスです。リンクのみ。サイトが自動読み取りをブロックしているため、アプリはここから何も取得しません。",
   "src.ps5dev-github.note":

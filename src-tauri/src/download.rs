@@ -1,5 +1,5 @@
-//! Direct download of a package from Sony's server into the app's own
-//! download folder. The address always comes from the catalog, never from the
+//! Direct download of a package from Sony's server, or from the Midnight
+//! Archive when the user chooses it, into the app's own download folder. The address always comes from the catalog, never from the
 //! UI. https is enforced on every redirect hop by the client; partial files
 //! are removed on failure or cancel.
 
@@ -16,14 +16,30 @@ use crate::integrity::LocalHashes;
 
 const PROGRESS_STEP: u64 = 8 * 1024 * 1024;
 
+/// Which server a download comes from; only used to word errors.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Server {
+    Sony,
+    MidnightArchive,
+}
+
+impl std::fmt::Display for Server {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            Server::Sony => "Sony's server",
+            Server::MidnightArchive => "The Midnight Archive's server",
+        })
+    }
+}
+
 #[derive(Debug, thiserror::Error)]
 pub enum DownloadError {
     #[error("Download cancelled.")]
     Cancelled,
-    #[error("Sony's server answered HTTP {0}, so the file is not available from there right now.")]
-    Status(u16),
-    #[error("Sony's server reports {reported} bytes but the catalog expects {expected}. Nothing was saved.")]
-    SizeMismatch { reported: u64, expected: u64 },
+    #[error("{server} answered HTTP {code}, so the file is not available from there right now.")]
+    Status { server: Server, code: u16 },
+    #[error("{server} reports {reported} bytes but the catalog expects {expected}. Nothing was saved.")]
+    SizeMismatch { server: Server, reported: u64, expected: u64 },
     #[error("The connection ended after {got} of {expected} bytes. Nothing was saved.")]
     Truncated { got: u64, expected: u64 },
     #[error("Network error: {0}")]
@@ -40,8 +56,10 @@ impl From<std::io::Error> for DownloadError {
 
 /// Download `url` to `dest_dir/final_name`, hashing as it streams.
 /// `expected_size` is the size the catalog states exactly, if it does.
+#[allow(clippy::too_many_arguments)]
 pub async fn download(
     client: &reqwest::Client,
+    server: Server,
     url: &str,
     dest_dir: &Path,
     final_name: &str,
@@ -51,21 +69,22 @@ pub async fn download(
 ) -> Result<(PathBuf, LocalHashes), DownloadError> {
     let resp = client.get(url).send().await.map_err(|e| DownloadError::Network(e.to_string()))?;
     if resp.status() != reqwest::StatusCode::OK {
-        return Err(DownloadError::Status(resp.status().as_u16()));
+        return Err(DownloadError::Status { server, code: resp.status().as_u16() });
     }
     let reported = resp.content_length();
     if let (Some(reported), Some(expected)) = (reported, expected_size)
         && reported != expected
     {
-        return Err(DownloadError::SizeMismatch { reported, expected });
+        return Err(DownloadError::SizeMismatch { server, reported, expected });
     }
     let stream = resp.bytes_stream().map(|c| c.map_err(|e| e.to_string()));
-    save_stream(stream, dest_dir, final_name, reported.or(expected_size), cancel, progress).await
+    save_stream(stream, server, dest_dir, final_name, reported.or(expected_size), cancel, progress).await
 }
 
 /// The part of `download` that doesn't need a network, so it can be tested.
 pub async fn save_stream<B: AsRef<[u8]>>(
     mut stream: impl Stream<Item = Result<B, String>> + Unpin,
+    server: Server,
     dest_dir: &Path,
     final_name: &str,
     expected_len: Option<u64>,
@@ -75,7 +94,7 @@ pub async fn save_stream<B: AsRef<[u8]>>(
     fs::create_dir_all(dest_dir)?;
     let part = dest_dir.join(format!("{final_name}.part"));
     let fin = dest_dir.join(final_name);
-    let result = write_parts(&mut stream, &part, expected_len, cancel, &mut progress).await;
+    let result = write_parts(&mut stream, server, &part, expected_len, cancel, &mut progress).await;
     match result {
         Ok(local) => {
             let moved = (|| -> std::io::Result<()> {
@@ -99,6 +118,7 @@ pub async fn save_stream<B: AsRef<[u8]>>(
 
 async fn write_parts<B: AsRef<[u8]>>(
     stream: &mut (impl Stream<Item = Result<B, String>> + Unpin),
+    server: Server,
     part: &Path,
     expected_len: Option<u64>,
     cancel: &AtomicBool,
@@ -123,7 +143,7 @@ async fn write_parts<B: AsRef<[u8]>>(
         if let Some(expected) = expected_len
             && done > expected
         {
-            return Err(DownloadError::SizeMismatch { reported: done, expected });
+            return Err(DownloadError::SizeMismatch { server, reported: done, expected });
         }
         if done >= next_report {
             progress(done, total);
@@ -176,6 +196,7 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let (path, local) = save_stream(
             chunks(&[b"hello ", b"world"]),
+            Server::Sony,
             dir.path(),
             "a.PUP",
             Some(11),
@@ -193,9 +214,17 @@ mod tests {
     #[tokio::test]
     async fn truncated_download_leaves_no_files() {
         let dir = tempfile::tempdir().unwrap();
-        let err = save_stream(chunks(&[b"abc"]), dir.path(), "a.PUP", Some(10), &AtomicBool::new(false), |_, _| {})
-            .await
-            .unwrap_err();
+        let err = save_stream(
+            chunks(&[b"abc"]),
+            Server::Sony,
+            dir.path(),
+            "a.PUP",
+            Some(10),
+            &AtomicBool::new(false),
+            |_, _| {},
+        )
+        .await
+        .unwrap_err();
         assert!(matches!(err, DownloadError::Truncated { got: 3, expected: 10 }));
         assert!(files(dir.path()).is_empty());
     }
@@ -203,23 +232,43 @@ mod tests {
     #[tokio::test]
     async fn oversized_download_is_stopped() {
         let dir = tempfile::tempdir().unwrap();
-        let err = save_stream(chunks(&[b"abcdef"]), dir.path(), "a.PUP", Some(3), &AtomicBool::new(false), |_, _| {})
-            .await
-            .unwrap_err();
+        let err = save_stream(
+            chunks(&[b"abcdef"]),
+            Server::MidnightArchive,
+            dir.path(),
+            "a.PUP",
+            Some(3),
+            &AtomicBool::new(false),
+            |_, _| {},
+        )
+        .await
+        .unwrap_err();
         assert!(matches!(err, DownloadError::SizeMismatch { .. }));
         assert!(files(dir.path()).is_empty());
+    }
+
+    #[test]
+    fn errors_name_the_server() {
+        let sony = DownloadError::Status { server: Server::Sony, code: 404 }.to_string();
+        assert!(sony.starts_with("Sony's server answered HTTP 404, so the file is not available"));
+        let archive =
+            DownloadError::SizeMismatch { server: Server::MidnightArchive, reported: 5, expected: 6 }.to_string();
+        assert!(archive.starts_with("The Midnight Archive's server reports 5 bytes but the catalog expects 6."));
     }
 
     #[tokio::test]
     async fn cancel_and_network_errors_clean_up_and_keep_an_older_file() {
         let dir = tempfile::tempdir().unwrap();
         fs::write(dir.path().join("a.PUP"), b"older good copy").unwrap();
-        let err = save_stream(chunks(&[b"abc"]), dir.path(), "a.PUP", None, &AtomicBool::new(true), |_, _| {})
-            .await
-            .unwrap_err();
+        let err =
+            save_stream(chunks(&[b"abc"]), Server::Sony, dir.path(), "a.PUP", None, &AtomicBool::new(true), |_, _| {})
+                .await
+                .unwrap_err();
         assert!(matches!(err, DownloadError::Cancelled));
         let broken = stream::iter(vec![Ok(b"abc".to_vec()), Err("reset".to_string())]);
-        let err = save_stream(broken, dir.path(), "a.PUP", None, &AtomicBool::new(false), |_, _| {}).await.unwrap_err();
+        let err = save_stream(broken, Server::Sony, dir.path(), "a.PUP", None, &AtomicBool::new(false), |_, _| {})
+            .await
+            .unwrap_err();
         assert!(matches!(err, DownloadError::Network(_)));
         assert_eq!(files(dir.path()), vec!["a.PUP".to_string()]);
         assert_eq!(fs::read(dir.path().join("a.PUP")).unwrap(), b"older good copy");

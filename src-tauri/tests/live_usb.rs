@@ -65,6 +65,7 @@ async fn download_verify_and_write_to_real_usb() {
     let mut last = 0u64;
     let (src, local) = download::download(
         &dl_client,
+        download::Server::Sony,
         &mirror.url,
         &dl_dir,
         "live-test.PUP",

@@ -273,6 +273,10 @@ export const dict: Record<Key, string> = {
     "표준 업데이트 및 복구 파일만 쓸 수 있습니다. 특수 변형과 알 수 없는 패키지는 제공되지 않습니다. 어떤 버전이 필요한지 모르겠다면 먼저 카탈로그의 설명을 읽으세요. 잘못된 파일은 익스플로잇이 가능한 펌웨어를 끝낼 수 있습니다.",
   "build.step2": "2. 파일",
   "build.download": "Sony에서 다운로드",
+  "build.downloadArchive": "Midnight Archive에서 다운로드",
+  "build.archiveNote":
+    "Midnight Archive는 Sony가 아닌 커뮤니티 아카이브입니다. SHA-256으로 파일을 찾으며 사용자의 IP 주소를 볼 수 있습니다. 앱은 내려받은 파일을 게시된 체크섬과 비교하고, 일치하지 않으면 삭제합니다.",
+  "build.sonyGoneArchive": "Sony의 서버가 더 이상 이 파일을 제공하지 않습니다. Midnight Archive는 제공합니다.",
   "build.downloading": "다운로드 중…",
   "build.haveFile": "이미 가진 파일 선택",
   "build.noSonyDownload":
@@ -348,6 +352,10 @@ export const dict: Record<Key, string> = {
   "bk.networkError": "네트워크 오류: {detail}",
   "bk.couldNotSave": "파일을 저장하지 못했습니다: {detail}",
   "bk.onlyStandard": "이 앱은 표준 업데이트 및 복구 파일만 드라이브에 쓸 수 있습니다.",
+  "bk.archiveHttp": "Midnight Archive 서버가 HTTP {status}로 응답하여 지금은 그곳에서 파일을 받을 수 없습니다.",
+  "bk.archiveSizeMismatch": "Midnight Archive 서버는 {reported}바이트라고 알려 주지만 카탈로그는 {expected}바이트를 예상합니다. 아무것도 저장하지 않았습니다.",
+  "bk.noArchiveAddress": "Midnight Archive에는 이 패키지의 다운로드 주소가 없습니다.",
+  "bk.downloadConflict": "이 파일의 체크섬 또는 크기에 대해 출처들의 내용이 서로 다르므로 앱은 내려받지 않습니다. 카탈로그 항목을 확인하세요.",
   "bk.sonyNoLonger": "Sony의 서버가 더 이상 이 파일을 제공하지 않습니다.",
   "bk.downloadedNoMatch":
     "내려받은 파일이 이 항목에 대해 게시된 체크섬과 일치하지 않아 삭제했습니다.",
@@ -547,11 +555,13 @@ export const dict: Record<Key, string> = {
 
   // Source notes (shown on the Sources page; English is also in manifests/sources.json)
   "src.mewx-ps5-fw-list.note":
-    "01.12부터 14.20까지 공식 펌웨어의 빌드 날짜, SHA-256, MD5, 크기를 담은 공개 색인입니다(일부 크기는 반올림됨). SHA-256 값이 있는 유일한 출처입니다. Darthsternie의 데이터를 일부 바탕으로 만들어졌으므로, MD5가 Darthsternie와 일치한다고 해서 독립적인 확인은 아닙니다.",
+    "01.12부터 14.20까지 공식 펌웨어의 빌드 날짜, SHA-256, MD5, 크기를 담은 공개 색인입니다(일부 크기는 반올림됨). SHA-256 값이 있는 두 출처 중 하나이며, 다른 하나는 Midnight Archive입니다. Darthsternie의 데이터를 일부 바탕으로 만들어졌으므로, MD5가 Darthsternie와 일치한다고 해서 독립적인 확인은 아닙니다.",
   "src.sony-ps5-cdn.note":
     "Sony의 자체 다운로드 서버입니다. 현재의 업데이트 및 복구 파일은 Sony 지원 페이지에서 읽습니다. 일부 이전 파일은 아직 제공되고 있으며, 앱은 요청할 때 하나씩 확인하고 없거나 비어 있는 파일은 제공되지 않는 것으로 처리합니다.",
   "src.darthsternie-ps5.note":
     "MD5 체크섬과 다운로드 미러가 있는 공식 및 복구 펌웨어의 커뮤니티 아카이브입니다. \"공식\"은 아카이브 자체의 분류이며 Sony가 해당 파일을 호스팅한다는 뜻이 아닙니다. 최신 항목에는 크기가 없고 Sony보다 늦을 수 있습니다. 미러 링크는 새로 고칠 때 읽으며 앱의 소스 코드에는 저장되지 않습니다.",
+  "src.midnight-archive-ps5.note":
+    "공식 PS5 업데이트 및 복구 파일을 직접 계산한 SHA-256과 MD5 값과 함께 나열하고, 각 파일을 SHA-256으로 https를 통해 제공하는 커뮤니티 아카이브입니다. 앱은 새로 고칠 때 두 목록을 읽으며(사이트가 요청하는 대로 요청 사이에 간격을 둡니다), 여기서 내려받기를 선택했을 때만 다운로드 주소에 접속합니다. 내려받은 파일은 다른 파일과 마찬가지로 게시된 체크섬과 비교합니다. 크기는 반올림된 값입니다. 다른 출처와 다를 때는 카탈로그가 두 값을 모두 보여 주며, 앱은 해당 항목을 내려받지 않습니다.",
   "src.ps5-devwiki.note":
     "PS5 하드웨어, 소프트웨어, 저장 장치에 대한 커뮤니티 기술 참고 자료입니다. 링크만 제공합니다. 사이트가 자동 읽기를 차단하므로 앱은 여기서 아무것도 가져오지 않습니다.",
   "src.ps5dev-github.note":

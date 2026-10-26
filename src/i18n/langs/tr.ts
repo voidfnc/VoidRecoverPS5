@@ -273,6 +273,10 @@ export const dict: Record<Key, string> = {
     "Yalnızca standart güncelleme ve kurtarma dosyaları yazılabilir. Özel sürümler ve bilinmeyen paketler sunulmaz. Hangi sürüme ihtiyacınız olduğundan emin değil misiniz? Önce katalog notlarını okuyun; yanlış dosya, exploit ile çalışan bir üretici yazılımını sonlandırabilir.",
   "build.step2": "2. Dosya",
   "build.download": "Sony'den indir",
+  "build.downloadArchive": "Midnight Archive'den indir",
+  "build.archiveNote":
+    "Midnight Archive bir topluluk arşividir, Sony değildir. Dosyayı SHA-256 değeriyle bulur ve IP adresinizi görür. Uygulama indirileni yayımlanan sağlama toplamlarıyla karşılaştırır ve eşleşmezse siler.",
+  "build.sonyGoneArchive": "Sony'nin sunucusu bu dosyayı artık sunmuyor. Midnight Archive sunuyor.",
   "build.downloading": "İndiriliyor…",
   "build.haveFile": "Elimdeki bir dosyayı seç",
   "build.noSonyDownload":
@@ -348,6 +352,12 @@ export const dict: Record<Key, string> = {
   "bk.networkError": "Ağ hatası: {detail}",
   "bk.couldNotSave": "Dosya kaydedilemedi: {detail}",
   "bk.onlyStandard": "Bu uygulama bir sürücüye yalnızca standart güncelleme ve kurtarma dosyalarını yazabilir.",
+  "bk.archiveHttp": "Midnight Archive sunucusu HTTP {status} yanıtı verdi, bu yüzden dosya şu anda oradan alınamıyor.",
+  "bk.archiveSizeMismatch":
+    "Midnight Archive sunucusu {reported} bayt bildiriyor ama katalog {expected} bekliyor. Hiçbir şey kaydedilmedi.",
+  "bk.noArchiveAddress": "Midnight Archive'in bu paket için indirme adresi yok.",
+  "bk.downloadConflict":
+    "Kaynaklar bu dosyanın sağlama toplamı veya boyutu konusunda çelişiyor, bu yüzden uygulama onu indirmeyecek. Katalog girdisine bakın.",
   "bk.sonyNoLonger": "Sony'nin sunucusu bu dosyayı artık sunmuyor.",
   "bk.downloadedNoMatch":
     "İndirilen dosya bu girdi için yayımlanan sağlama toplamlarıyla eşleşmiyor, bu yüzden silindi.",
@@ -547,11 +557,13 @@ export const dict: Record<Key, string> = {
 
   // Source notes (shown on the Sources page; English is also in manifests/sources.json)
   "src.mewx-ps5-fw-list.note":
-    "01.12'den 14.20'ye kadar resmî üretici yazılımının yapı tarihi, SHA-256, MD5 ve boyutuyla (bazı boyutlar yuvarlanmıştır) herkese açık bir indeksi. SHA-256 değerleri olan tek kaynak. Kısmen Darthsternie'nin verilerinden oluşturulmuştur, bu yüzden MD5 değerlerinin Darthsternie ile uyuşması bağımsız bir doğrulama değildir.",
+    "01.12'den 14.20'ye kadar resmî üretici yazılımının yapı tarihi, SHA-256, MD5 ve boyutuyla (bazı boyutlar yuvarlanmıştır) herkese açık bir indeksi. SHA-256 değerleri olan iki kaynaktan biri; diğeri Midnight Archive. Kısmen Darthsternie'nin verilerinden oluşturulmuştur, bu yüzden MD5 değerlerinin Darthsternie ile uyuşması bağımsız bir doğrulama değildir.",
   "src.sony-ps5-cdn.note":
     "Sony'nin kendi indirme sunucusu. Güncel güncelleme ve kurtarma dosyaları Sony'nin destek sayfasından okunur. Bazı eski dosyalar hâlâ sunuluyor; uygulama siz istediğinizde birini denetler ve eksik veya boş bir dosyayı kullanılamaz sayar.",
   "src.darthsternie-ps5.note":
     "MD5 sağlama toplamları ve indirme aynalarıyla resmî ve kurtarma üretici yazılımının topluluk arşivi. \"Resmî\" arşivin kendi kategorisidir, dosyayı Sony'nin barındırdığının işareti değildir. Yeni girdilerde boyutlar eksiktir ve Sony'nin gerisinde kalabilir. Ayna bağlantıları siz yenilediğinizde okunur ve uygulamanın kaynak koduna asla kaydedilmez.",
+  "src.midnight-archive-ps5.note":
+    "Resmî PS5 güncelleme ve kurtarma dosyalarını kendi hesapladığı SHA-256 ve MD5 değerleriyle listeleyen ve her dosyayı SHA-256 değeriyle https üzerinden sunan bir topluluk arşivi. Uygulama yenilediğinizde iki listeyi okur (sitenin istediği gibi istekler arasında bekleyerek) ve bir indirme adresine yalnızca oradan indirmeyi seçtiğinizde bağlanır. İndirilen dosya, diğerleri gibi yayımlanan sağlama toplamlarıyla karşılaştırılır. Boyutlar yuvarlanmıştır. Diğer kaynaklarla çeliştiği yerde katalog iki değeri de gösterir ve uygulama o girdiyi indirmez.",
   "src.ps5-devwiki.note":
     "PS5 donanımı, yazılımı ve depolaması için topluluk teknik başvuru kaynağı. Yalnızca bağlantı: site otomatik okumayı engelliyor, bu yüzden uygulama ondan hiçbir şey almaz.",
   "src.ps5dev-github.note":

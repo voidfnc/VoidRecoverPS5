@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "catalog_version": "0.2.0",
-  "generated_at": "2026-10-25T00:00:00Z",
+  "catalog_version": "0.3.0",
+  "generated_at": "2026-10-26T00:00:00Z",
   "sources": [
     {
       "source_id": "mewx-ps5-fw-list",
@@ -15,7 +15,7 @@
         "darthsternie-ps5",
         "ps5-devwiki"
       ],
-      "notes": "A public index of official firmware from 01.12 to 14.20 with build date, SHA-256, MD5 and size (some sizes are rounded). The only source with SHA-256 values. It is built partly from Darthsternie's data, so its MD5 agreeing with Darthsternie is not independent confirmation."
+      "notes": "A public index of official firmware from 01.12 to 14.20 with build date, SHA-256, MD5 and size (some sizes are rounded). One of two sources with SHA-256 values; the other is the Midnight Archive. It is built partly from Darthsternie's data, so its MD5 agreeing with Darthsternie is not independent confirmation."
     },
     {
       "source_id": "sony-ps5-cdn",
@@ -38,6 +38,17 @@
       "adapter": "darthsternie_ps5",
       "derived_from": [],
       "notes": "A community archive of official and recovery firmware with MD5 checksums and download mirrors. \"Official\" is the archive's own category, not a sign that Sony hosts the file. Sizes are missing for newer entries, and it can lag behind Sony. Mirror links are read when you refresh and are never saved in the app's source code."
+    },
+    {
+      "source_id": "midnight-archive-ps5",
+      "name": "The Midnight Channel Archives (PS5 firmware)",
+      "source_type": "community_archive",
+      "source_page": "https://archive.midnightchannel.net/SonyPS/Firmware/index.php?cat=PS5SYS",
+      "maintainer": null,
+      "last_checked": "2026-10-26T00:00:00Z",
+      "adapter": "midnight_archive",
+      "derived_from": [],
+      "notes": "A community archive that lists official PS5 update and recovery files with the SHA-256 and MD5 values it computed, and serves each file by its SHA-256 over https. The app reads the two listings when you refresh (pausing between requests as the site asks) and only contacts a download address when you choose to download from it. The download is checked against the published checksums like any other. Sizes are rounded. Where it disagrees with other sources, the catalog shows both values and the app will not download that entry."
     },
     {
       "source_id": "ps5-devwiki",

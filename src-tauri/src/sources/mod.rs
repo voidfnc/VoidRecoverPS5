@@ -7,6 +7,7 @@
 pub mod darthsternie;
 pub mod http;
 pub mod mewx;
+pub mod midnight;
 pub mod sony;
 
 use reqwest::Client;
@@ -91,12 +92,14 @@ pub fn assemble(
     mewx: Result<Fetched<Vec<PackageRecord>>, AdapterError>,
     sony_page: Result<Fetched<OfficialLatest>, AdapterError>,
     darthsternie: Result<Fetched<Vec<PackageRecord>>, AdapterError>,
+    midnight: Result<Fetched<Vec<PackageRecord>>, AdapterError>,
     now: &str,
 ) -> CatalogCache {
     let mut statuses = Vec::new();
 
     let mewx_records = settle(previous, mewx::SOURCE_ID, mewx, now, &mut statuses, |v| v.len());
     let ds_records = settle(previous, darthsternie::SOURCE_ID, darthsternie, now, &mut statuses, |v| v.len());
+    let mn_records = settle(previous, midnight::SOURCE_ID, midnight, now, &mut statuses, |v| v.len());
 
     // The Sony page yields one value, not records; settle it the same way.
     let mut latest = match sony_page {
@@ -128,6 +131,7 @@ pub fn assemble(
 
     let mut records = mewx_records;
     records.extend(ds_records);
+    records.extend(mn_records);
     records.extend(sony_records);
     CatalogCache {
         schema_version: crate::cache::CACHE_SCHEMA_VERSION,
@@ -205,13 +209,32 @@ fn failed_status(
     }
 }
 
+/// The archive's two listings, one after the other with the pause its
+/// robots.txt asks for. All or nothing: half a listing would drop records.
+async fn fetch_midnight(client: &Client, now: &str) -> Result<Fetched<Vec<PackageRecord>>, AdapterError> {
+    let mut records = Vec::new();
+    let mut hashes = String::new();
+    let mut final_url = String::new();
+    for (i, listing) in midnight::LISTINGS.iter().enumerate() {
+        if i > 0 {
+            tokio::time::sleep(std::time::Duration::from_secs(midnight::CRAWL_DELAY_SECS)).await;
+        }
+        let page = http::fetch_text(client, &listing.url(), midnight::MAX_BYTES).await?;
+        records.extend(midnight::parse_listing(&page.body, *listing, now)?);
+        hashes.push_str(&sha256_hex(&page.body));
+        final_url = page.final_url;
+    }
+    Ok(Fetched { value: records, content_sha256: sha256_hex(&hashes), final_url })
+}
+
 /// Fetch all sources, then probe the two current Sony files.
 pub async fn refresh(client: &Client, previous: &CatalogCache) -> CatalogCache {
     let now = now_rfc3339();
-    let (m, s, d) = tokio::join!(
+    let (m, s, d, n) = tokio::join!(
         http::fetch_text(client, mewx::RAW_URL, mewx::MAX_BYTES),
         http::fetch_text(client, sony::SUPPORT_PAGE, sony::MAX_BYTES),
         http::fetch_text(client, darthsternie::REST_URL, darthsternie::MAX_BYTES),
+        fetch_midnight(client, &now),
     );
     let mewx = m.and_then(|r| {
         Ok(Fetched { value: mewx::parse(&r.body, &now)?, content_sha256: sha256_hex(&r.body), final_url: r.final_url })
@@ -227,7 +250,7 @@ pub async fn refresh(client: &Client, previous: &CatalogCache) -> CatalogCache {
         let parsed = darthsternie::parse_rest_json(&r.body, &now)?;
         Ok(Fetched { value: parsed.records, content_sha256: parsed.content_sha256, final_url: r.final_url })
     });
-    let mut cache = assemble(previous, mewx, sony_page, darthsternie, &now);
+    let mut cache = assemble(previous, mewx, sony_page, darthsternie, n, &now);
     if let Some(latest) = cache.official_latest.clone() {
         for url in [latest.update_url, latest.reinstall_url] {
             probe_sony_url(client, &mut cache, &url).await;
@@ -262,6 +285,14 @@ mod tests {
     const MEWX: &str = include_str!("../../../tests/fixtures/sources/mewx_readme.md");
     const SONY: &str = include_str!("../../../tests/fixtures/sources/sony_support_page.html");
     const DS: &str = include_str!("../../../tests/fixtures/sources/darthsternie_page.json");
+    const MN_SYS: &str = include_str!("../../../tests/fixtures/sources/midnight_ps5sys.html");
+    const MN_REC: &str = include_str!("../../../tests/fixtures/sources/midnight_ps5rec.html");
+
+    fn mn_ok() -> Result<Fetched<Vec<PackageRecord>>, AdapterError> {
+        let mut v = midnight::parse_listing(MN_SYS, midnight::LISTINGS[0], "t").unwrap();
+        v.extend(midnight::parse_listing(MN_REC, midnight::LISTINGS[1], "t").unwrap());
+        Ok(Fetched { value: v, content_sha256: sha256_hex(MN_SYS), final_url: String::new() })
+    }
 
     fn ok_all(prev: &CatalogCache) -> CatalogCache {
         let ds = darthsternie::parse_rest_json(DS, "t").unwrap();
@@ -282,6 +313,7 @@ mod tests {
                 content_sha256: ds.content_sha256,
                 final_url: darthsternie::REST_URL.into(),
             }),
+            mn_ok(),
             "t1",
         )
     }
@@ -307,6 +339,7 @@ mod tests {
             }),
             Err(AdapterError::Network("offline".into())),
             Err(AdapterError::LayoutChanged("columns moved".into())),
+            mn_ok(),
             "t2",
         );
         let ds = second.status(darthsternie::SOURCE_ID).unwrap();
@@ -322,6 +355,7 @@ mod tests {
     fn failure_with_nothing_cached_is_failed() {
         let c = assemble(
             &CatalogCache::default(),
+            Err(AdapterError::Network("x".into())),
             Err(AdapterError::Network("x".into())),
             Err(AdapterError::Network("x".into())),
             Err(AdapterError::Network("x".into())),
@@ -342,6 +376,7 @@ mod tests {
                 content_sha256: sha256_hex(&changed),
                 final_url: String::new(),
             }),
+            Err(AdapterError::Network("x".into())),
             Err(AdapterError::Network("x".into())),
             Err(AdapterError::Network("x".into())),
             "t2",

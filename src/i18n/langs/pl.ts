@@ -274,6 +274,10 @@ export const dict: Record<Key, string> = {
     "Można zapisać tylko standardowe pliki aktualizacji i odzyskiwania. Warianty specjalne i nieznane pakiety nie są oferowane. Nie wiesz, jakiej wersji potrzebujesz? Najpierw przeczytaj uwagi w katalogu; zły plik może zakończyć firmware zgodny z exploitem.",
   "build.step2": "2. Plik",
   "build.download": "Pobierz od Sony",
+  "build.downloadArchive": "Pobierz z Midnight Archive",
+  "build.archiveNote":
+    "Midnight Archive to archiwum społeczności, a nie Sony. Znajduje plik po jego SHA-256 i widzi twój adres IP. Aplikacja porównuje pobrany plik z opublikowanymi sumami kontrolnymi i usuwa go, jeśli się nie zgadzają.",
+  "build.sonyGoneArchive": "Serwer Sony już nie oferuje tego pliku. Midnight Archive — tak.",
   "build.downloading": "Pobieranie…",
   "build.haveFile": "Wybierz plik, który już mam",
   "build.noSonyDownload":
@@ -349,6 +353,12 @@ export const dict: Record<Key, string> = {
   "bk.networkError": "Błąd sieci: {detail}",
   "bk.couldNotSave": "Nie udało się zapisać pliku: {detail}",
   "bk.onlyStandard": "Ta aplikacja może zapisać na dysku tylko standardowe pliki aktualizacji i odzyskiwania.",
+  "bk.archiveHttp": "Serwer Midnight Archive odpowiedział HTTP {status}, więc plik jest stamtąd teraz niedostępny.",
+  "bk.archiveSizeMismatch":
+    "Serwer Midnight Archive podaje {reported} bajtów, a katalog oczekuje {expected}. Nic nie zapisano.",
+  "bk.noArchiveAddress": "Midnight Archive nie ma adresu pobierania dla tego pakietu.",
+  "bk.downloadConflict":
+    "Źródła nie zgadzają się co do sumy kontrolnej lub rozmiaru tego pliku, więc aplikacja go nie pobierze. Zobacz wpis w katalogu.",
   "bk.sonyNoLonger": "Serwer Sony już nie oferuje tego pliku.",
   "bk.downloadedNoMatch":
     "Pobrany plik nie zgadza się z sumami kontrolnymi opublikowanymi dla tego wpisu, więc został usunięty.",
@@ -548,11 +558,13 @@ export const dict: Record<Key, string> = {
 
   // Source notes (shown on the Sources page; English is also in manifests/sources.json)
   "src.mewx-ps5-fw-list.note":
-    "Publiczny indeks oficjalnego firmware'u od 01.12 do 14.20 z datą kompilacji, SHA-256, MD5 i rozmiarem (niektóre rozmiary są zaokrąglone). Jedyne źródło z wartościami SHA-256. Powstał częściowo na podstawie danych Darthsternie, więc zgodność jego MD5 z Darthsternie nie jest niezależnym potwierdzeniem.",
+    "Publiczny indeks oficjalnego firmware'u od 01.12 do 14.20 z datą kompilacji, SHA-256, MD5 i rozmiarem (niektóre rozmiary są zaokrąglone). Jedno z dwóch źródeł z wartościami SHA-256; drugie to Midnight Archive. Powstał częściowo na podstawie danych Darthsternie, więc zgodność jego MD5 z Darthsternie nie jest niezależnym potwierdzeniem.",
   "src.sony-ps5-cdn.note":
     "Własny serwer pobierania Sony. Bieżące pliki aktualizacji i odzyskiwania są odczytywane ze strony pomocy Sony. Niektóre starsze pliki nadal są udostępniane; aplikacja sprawdza je pojedynczo na Twoje żądanie i traktuje brakujący lub pusty plik jako niedostępny.",
   "src.darthsternie-ps5.note":
     "Archiwum społeczności z oficjalnym firmware'em i firmware'em odzyskiwania, z sumami kontrolnymi MD5 i serwerami lustrzanymi do pobrania. \"Official\" to własna kategoria archiwum, a nie znak, że plik hostuje Sony. W nowszych wpisach brakuje rozmiarów, a archiwum może pozostawać w tyle za Sony. Łącza do serwerów lustrzanych są odczytywane przy odświeżaniu i nigdy nie są zapisywane w kodzie źródłowym aplikacji.",
+  "src.midnight-archive-ps5.note":
+    "Archiwum społeczności, które wymienia oficjalne pliki aktualizacji i odzyskiwania PS5 z obliczonymi przez siebie wartościami SHA-256 i MD5 oraz udostępnia każdy plik po jego SHA-256 przez https. Aplikacja czyta obie listy podczas odświeżania (z przerwą między żądaniami, o jaką prosi serwis) i łączy się z adresem pobierania tylko wtedy, gdy wybierzesz pobieranie stamtąd. Pobrany plik jest porównywany z opublikowanymi sumami kontrolnymi, jak każdy inny. Rozmiary są zaokrąglone. Tam, gdzie archiwum różni się od innych źródeł, katalog pokazuje obie wartości, a aplikacja nie pobierze tego wpisu.",
   "src.ps5-devwiki.note":
     "Techniczna dokumentacja społeczności o sprzęcie, oprogramowaniu i pamięci PS5. Tylko łącze: witryna blokuje automatyczne czytanie, więc aplikacja niczego z niej nie pobiera.",
   "src.ps5dev-github.note":

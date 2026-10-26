@@ -9,7 +9,8 @@ This file tracks what is built. Windows x64 first; macOS and code signing come a
 - Adapters, each failing closed on layout changes and tested against fixtures:
   - MewX README tables (SHA-256, MD5, size, build date, sys_ex rows),
   - Sony support page (current update and recovery links) plus Sony CDN addresses built from the index, with HEAD availability checks (404 or 0 bytes = unavailable),
-  - Darthsternie archive via the WordPress REST API (Official / Recovery tables, sys_ex suffixes, blank sizes, file vs folder links).
+  - Darthsternie archive via the WordPress REST API (Official / Recovery tables, sys_ex suffixes, blank sizes, file vs folder links),
+  - Midnight Channel Archives PS5 listings (update and recovery tables with SHA-256, MD5 and rounded sizes; download addresses are built from the validated SHA-256, never from page text; the two pages are fetched five seconds apart).
 - Refresh keeps a failed source's previous records as stale, detects content changes by hash, and caches locally.
 - Catalog merge per version/type with conflicts, cross-source matches and `derived_from` independence.
 - Streaming SHA-256 + MD5 of a chosen file with progress and cancel; precise result wording.
