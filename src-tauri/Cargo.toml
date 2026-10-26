@@ -1,6 +1,6 @@
 [package]
 name = "voidrecoverps5"
-version = "0.1.0"
+version = "0.1.1"
 description = "Recovery USB and firmware catalog assistant for PS5 consoles (unofficial)"
 authors = ["voidfnc"]
 license = "MIT"

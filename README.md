@@ -1,6 +1,6 @@
 # VoidRecoverPS5
 
-Beta 0.1.0 · Windows 10/11 x64 · 12 languages · installer (nothing else to install) · from source: Rust and Node.js
+Beta 0.1.1 · Windows 10/11 x64 · 12 languages · installer (nothing else to install) · from source: Rust and Node.js
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E4E029CR36) [![Discord](https://img.shields.io/badge/Discord-Join%20the%20server-5865F2?logo=discord&logoColor=white)](https://discord.gg/rcNfF5AvMn)
 
